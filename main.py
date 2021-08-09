@@ -48,8 +48,8 @@ class ADDA():
         
         self.discriminator = get_discriminator()
 
-        self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-4)
-        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
+        self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-5)
+        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-5)
     
     def discriminator_loss(self, sim_output, real_output):
         sim_loss = cross_entropy(tf.ones_like(sim_output), sim_output)
@@ -91,7 +91,7 @@ class ADDA():
             print("Epoch: ",epoch+1,", Disc_Loss: ", total_disc_loss/num_steps, ", Target_Encoder_Loss: ", total_target_encoder_loss/num_steps)
             print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
             
-            if (epoch + 1) % 5 == 0:
+            if (epoch + 1) % 100 == 0:
                 checkpoint.save(file_prefix = checkpoint_prefix)
         
         checkpoint.save(file_prefix = checkpoint_prefix)
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     real_data_path = 'handwriting_uppercase_lowercase_aashish_kids_phase1_background_mirror_18th_jan_augmented_new_train.csv'
     source_encoder_model_path = "source_encoder_model"
 
-    epochs = 10
+    epochs = 2000
     batch_size = 256
 
     adda_1 = ADDA(sim_data_path=sim_data_path,

@@ -86,6 +86,8 @@ class ADDA():
                 total_disc_loss += disc_loss
                 total_target_encoder_loss += target_encoder_loss
             
+            total_disc_loss = total_disc_loss.numpy()
+            total_target_encoder_loss = total_target_encoder_loss.numpy()
             print("Epoch: ",epoch+1,", Disc_Loss: ", total_disc_loss/num_steps, ", Target_Encoder_Loss: ", total_target_encoder_loss/num_steps)
             print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
             
@@ -113,7 +115,7 @@ class ADDA():
 
         self.target_encoder_optimizer.apply_gradients(zip(gradients_of_target_encoder, self.target_encoder.trainable_variables))
         self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
-        return disc_loss.numpy(), target_encoder_loss.numpy()
+        return disc_loss, target_encoder_loss
         
 
 

@@ -58,7 +58,7 @@ class ADDA():
         return total_loss
 
     def target_encoder_loss(self, real_output):
-        return cross_entropy(tf.ones_like(real_output), real_output)*2
+        return cross_entropy(tf.ones_like(real_output), real_output)
 
     def train(self):
         checkpoint_dir = './training_checkpoints'
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     real_data_path = 'handwriting_uppercase_lowercase_aashish_kids_phase1_background_mirror_18th_jan_augmented_new_train.csv'
     source_encoder_model_path = "source_encoder_model"
 
-    epochs = 20
+    epochs = 10
     batch_size = 256
 
     adda_1 = ADDA(sim_data_path=sim_data_path,

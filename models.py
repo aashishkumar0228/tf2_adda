@@ -25,7 +25,7 @@ def get_source_encoder():
     return model
 
 def get_source_classifier(classes):
-    input_layer = tf.keras.layers.Input(shape=(None, 3136))
+    input_layer = tf.keras.layers.Input(shape=(3136,))
     x = tf.keras.layers.Dense(256, activation='relu')(input_layer)
     x = tf.keras.layers.Dense(classes, activation='softmax')(x)
     
@@ -36,7 +36,7 @@ def get_source_classifier(classes):
     return source_classifier_model
 
 def get_discriminator():
-    input_layer = tf.keras.layers.Input(shape=(None, 3136))
+    input_layer = tf.keras.layers.Input(shape=(3136,))
     x = tf.keras.layers.Dense(128, activation='relu')(input_layer)
     x = tf.keras.layers.Dense(2, activation='softmax')(x)
 

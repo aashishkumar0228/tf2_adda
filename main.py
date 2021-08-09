@@ -40,6 +40,8 @@ class ADDA():
 
         self.target_encoder = get_source_encoder()
         self.target_encoder.set_weights(self.source_encoder.get_weights())
+        print(self.source_encoder.layers[1].get_weights()[1])
+        print(self.target_encoder.layers[0].get_weights()[1])
 
         for layer in self.source_encoder.layers:
             layer.trainable = False
@@ -68,16 +70,24 @@ class ADDA():
         
 
         for epoch in range(self.epochs):
+            start = time.time()
             print("Epoch: ", epoch)
             num_steps = int(self.total_real_samples / self.batch_size)
             np.random.shuffle(self.x_sim)
             np.random.shuffle(self.x_real)
+            total_disc_loss = 0
+            total_target_encoder_loss = 0
             for idx in range(num_steps):
                 idx_start = idx * self.batch_size
                 idx_end = min((idx + 1) * self.batch_size, self.total_real_samples)
                 x_sim_batch = self.x_sim[idx_start : idx_end]
                 x_real_batch = self.x_real[idx_start : idx_end]
-                self.train_step(x_sim_batch, x_real_batch)
+                disc_loss, target_encoder_loss = self.train_step(x_sim_batch, x_real_batch)
+                total_disc_loss += disc_loss
+                total_target_encoder_loss += target_encoder_loss
+            
+            print("Epoch: ",epoch,", Disc_Loss: ", total_disc_loss/num_steps, ", Target_Encoder_Loss: ", total_target_encoder_loss/num_steps)
+            print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
             
             if (epoch + 1) % 5 == 0:
                 checkpoint.save(file_prefix = checkpoint_prefix)
@@ -103,6 +113,7 @@ class ADDA():
 
         self.target_encoder_optimizer.apply_gradients(zip(gradients_of_target_encoder, self.target_encoder.trainable_variables))
         self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
+        return disc_loss, target_encoder_loss
         
 
 
@@ -111,7 +122,7 @@ if __name__ == '__main__':
     real_data_path = 'handwriting_uppercase_lowercase_aashish_kids_phase1_background_mirror_18th_jan_augmented_new_train.csv'
     source_encoder_model_path = "source_encoder_model"
 
-    epochs = 10
+    epochs = 20
     batch_size = 256
 
     adda_1 = ADDA(sim_data_path=sim_data_path,

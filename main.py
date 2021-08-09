@@ -1,4 +1,3 @@
-from temp2 import train_step
 import tensorflow as tf
 
 import glob

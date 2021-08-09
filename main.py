@@ -77,7 +77,7 @@ class ADDA():
                 idx_end = min((idx + 1) * self.batch_size, self.total_real_samples)
                 x_sim_batch = self.x_sim[idx_start : idx_end]
                 x_real_batch = self.x_real[idx_start : idx_end]
-                train_step(x_sim_batch, x_real_batch)
+                self.train_step(x_sim_batch, x_real_batch)
             
             if (epoch + 1) % 5 == 0:
                 checkpoint.save(file_prefix = checkpoint_prefix)

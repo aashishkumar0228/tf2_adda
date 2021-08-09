@@ -48,7 +48,7 @@ class ADDA():
         
         self.discriminator = get_discriminator()
 
-        self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-4)
+        self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-5)
         self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-5)
     
     def discriminator_loss(self, sim_output, real_output):
@@ -58,7 +58,7 @@ class ADDA():
         return total_loss
 
     def target_encoder_loss(self, real_output):
-        return cross_entropy(tf.ones_like(real_output), real_output)
+        return cross_entropy(tf.ones_like(real_output), real_output)*2
 
     def train(self):
         checkpoint_dir = './training_checkpoints'

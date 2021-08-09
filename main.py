@@ -49,7 +49,7 @@ class ADDA():
         self.discriminator = get_discriminator()
 
         self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-4)
-        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
+        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-5)
     
     def discriminator_loss(self, sim_output, real_output):
         sim_loss = cross_entropy(tf.ones_like(sim_output), sim_output)
@@ -71,7 +71,7 @@ class ADDA():
 
         for epoch in range(self.epochs):
             start = time.time()
-            print("Epoch: ", epoch)
+            print("Epoch: ", epoch+1)
             num_steps = int(self.total_real_samples / self.batch_size)
             np.random.shuffle(self.x_sim)
             np.random.shuffle(self.x_real)
@@ -86,7 +86,7 @@ class ADDA():
                 total_disc_loss += disc_loss
                 total_target_encoder_loss += target_encoder_loss
             
-            print("Epoch: ",epoch,", Disc_Loss: ", total_disc_loss/num_steps, ", Target_Encoder_Loss: ", total_target_encoder_loss/num_steps)
+            print("Epoch: ",epoch+1,", Disc_Loss: ", total_disc_loss/num_steps, ", Target_Encoder_Loss: ", total_target_encoder_loss/num_steps)
             print ('Time for epoch {} is {} sec'.format(epoch + 1, time.time()-start))
             
             if (epoch + 1) % 5 == 0:
@@ -113,7 +113,7 @@ class ADDA():
 
         self.target_encoder_optimizer.apply_gradients(zip(gradients_of_target_encoder, self.target_encoder.trainable_variables))
         self.discriminator_optimizer.apply_gradients(zip(gradients_of_discriminator, self.discriminator.trainable_variables))
-        return disc_loss, target_encoder_loss
+        return disc_loss.numpy(), target_encoder_loss.numpy()
         
 
 

@@ -69,6 +69,7 @@ class ADDA():
         
 
         for epoch in range(self.epochs):
+            print("Epoch: ", epoch)
             num_steps = int(self.total_real_samples / self.batch_size)
             np.random.shuffle(self.x_sim)
             np.random.shuffle(self.x_real)

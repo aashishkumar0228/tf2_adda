@@ -37,8 +37,8 @@ def get_source_classifier(classes):
 
 def get_discriminator():
     input_layer = tf.keras.layers.Input(shape=(3136,))
-    x = tf.keras.layers.Dense(128, activation='relu')(input_layer)
-    x = tf.keras.layers.Dense(2, activation='softmax')(x)
+    x = tf.keras.layers.Dense(256, activation='relu')(input_layer)
+    x = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 
     discriminator_model = tf.keras.models.Model(inputs=input_layer, outputs=(x))
     print('Discriminator summary')

@@ -126,7 +126,7 @@ if __name__ == '__main__':
     real_data_path = 'handwriting_uppercase_lowercase_aashish_kids_phase1_background_mirror_18th_jan_augmented_new_train.csv'
     source_encoder_model_path = "source_encoder_model"
 
-    epochs = 2000
+    epochs = 20
     batch_size = 256
 
     adda_1 = ADDA(sim_data_path=sim_data_path,

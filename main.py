@@ -49,7 +49,7 @@ class ADDA():
         self.discriminator = get_discriminator()
 
         self.target_encoder_optimizer = tf.keras.optimizers.Adam(1e-4)
-        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-5)
+        self.discriminator_optimizer = tf.keras.optimizers.Adam(1e-6)
     
     def discriminator_loss(self, sim_output, real_output):
         sim_loss = cross_entropy(tf.ones_like(sim_output), sim_output)
